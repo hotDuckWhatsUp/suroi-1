@@ -82,6 +82,7 @@ if (isMainThread) {
         let response: GetGameResponse;
 
         const punishment = punishments.find(p => p.ip === ip);
+        console.log(`Punishment is ${punishment?.punishmentType}${punishment?.ip}${punishment?.reason} `);
         if (punishment) {
             if (punishment.punishmentType === "warn") {
                 const protection = Config.protection;

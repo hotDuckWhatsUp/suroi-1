@@ -1335,19 +1335,12 @@ export class UIManager {
                         : "The Kill Leader is dead!"
                     : "The Kill Leader killed themselves!"
                 }`;
-                switch (this.game.activePlayerID) {
-                    case attackerId: {
-                        classes.push("kill-feed-item-killer");
-                        break;
-                    }
-                    case victimId: {
-                        classes.push("kill-feed-item-victim");
-                        break;
-                    }
-                    default: {
-                        classes.push("kill-feed-kill-leader");
-                        break;
-                    }
+                if (attackerId === this.game.activePlayerID) {
+                    classes.push("kill-feed-item-killer");
+                } else if (victimId === this.game.activePlayerID) {
+                    classes.push("kill-feed-item-victim");
+                } else {
+                    classes.push("kill-feed-kill-leader");
                 }
 
                 this.game.soundManager.play("kill_leader_dead");
@@ -1585,7 +1578,13 @@ class PlayerHealthUI {
         }
 
         if (this._name.dirty) {
-            this.nameLabel.text((this.game.uiManager.getRawPlayerNameNullish(id) ?? this._name.value) || "Loading…");
+            const teammate = this.game.playerNames.get(this._id.value);
+
+            if (teammate) {
+                this.nameLabel.text(teammate.name);
+            } else {
+                this.nameLabel.text("Loading..");
+            }
         }
 
         if (
